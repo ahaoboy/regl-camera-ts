@@ -19,6 +19,7 @@
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
+    "pub": "npm publish",
     "prepare": "tsdx build"
   },
   "husky": {
