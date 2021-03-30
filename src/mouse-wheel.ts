@@ -1,23 +1,20 @@
-// @ts-nocheck
-
 import toPX from './to-px';
 
-function mouseWheelListen(element, callback, noScroll) {
-  if (typeof element === 'function') {
-    noScroll = !!callback;
-    callback = element;
-    element = window;
-  }
-  var lineHeight = toPX('ex', element);
-  var listener = function(ev) {
+const mouseWheelListen = (
+  element: HTMLElement,
+  callback: (state: { dx: number; dy: number; dz: number }) => void,
+  noScroll: boolean
+) => {
+  const lineHeight = toPX('ex') || 0;
+  const listener = (ev: WheelEvent) => {
     if (noScroll) {
       ev.preventDefault();
     }
-    var dx = ev.deltaX || 0;
-    var dy = ev.deltaY || 0;
-    var dz = ev.deltaZ || 0;
-    var mode = ev.deltaMode;
-    var scale = 1;
+    let dx = ev.deltaX || 0;
+    let dy = ev.deltaY || 0;
+    let dz = ev.deltaZ || 0;
+    let mode = ev.deltaMode;
+    let scale = 1;
     switch (mode) {
       case 1:
         scale = lineHeight;
@@ -30,10 +27,10 @@ function mouseWheelListen(element, callback, noScroll) {
     dy *= scale;
     dz *= scale;
     if (dx || dy || dz) {
-      return callback(dx, dy, dz, ev);
+      callback({ dx, dy, dz });
     }
   };
   element.addEventListener('wheel', listener);
   return listener;
-}
-module.exports = mouseWheelListen;
+};
+export default mouseWheelListen;

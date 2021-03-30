@@ -1,59 +1,42 @@
-// @ts-nocheck
-function mouseButtons(ev: Event) {
+const mouseButtons = (ev: MouseEvent | Event) => {
   if (typeof ev === 'object') {
     if ('buttons' in ev) {
       return ev.buttons;
-    } else if ('which' in ev) {
-      var b = ev.which;
-      if (b === 2) {
-        return 4;
-      } else if (b === 3) {
-        return 2;
-      } else if (b > 0) {
-        return 1 << (b - 1);
-      }
-    } else if ('button' in ev) {
-      var b = ev.button;
-      if (b === 1) {
-        return 4;
-      } else if (b === 2) {
-        return 2;
-      } else if (b >= 0) {
-        return 1 << b;
-      }
     }
   }
   return 0;
-}
-exports.buttons = mouseButtons;
+};
 
-function mouseElement(ev) {
+const mouseElement = (ev: MouseEvent | Event) => {
   return ev.target || ev.srcElement || window;
-}
-exports.element = mouseElement;
+};
 
-function mouseRelativeX(ev) {
+const mouseRelativeX = (ev: MouseEvent | Event) => {
   if (typeof ev === 'object') {
     if ('offsetX' in ev) {
       return ev.offsetX;
     }
-    var target = mouseElement(ev);
-    var bounds = target.getBoundingClientRect();
-    return ev.clientX - bounds.left;
+    // var target = <HTMLElement>mouseElement(ev);
+    // var bounds = target.getBoundingClientRect();
+    // return ev.clientX - bounds.left;
   }
   return 0;
-}
-exports.x = mouseRelativeX;
+};
 
-function mouseRelativeY(ev) {
+function mouseRelativeY(ev: MouseEvent | Event) {
   if (typeof ev === 'object') {
     if ('offsetY' in ev) {
       return ev.offsetY;
     }
-    var target = mouseElement(ev);
-    var bounds = target.getBoundingClientRect();
-    return ev.clientY - bounds.top;
+    // var target = <HTMLElement>mouseElement(ev);
+    // var bounds = target.getBoundingClientRect();
+    // return ev.clientY - bounds.top;
   }
   return 0;
 }
-exports.y = mouseRelativeY;
+export default {
+  x: mouseRelativeX,
+  y: mouseRelativeY,
+  element: mouseElement,
+  buttons: mouseButtons,
+};

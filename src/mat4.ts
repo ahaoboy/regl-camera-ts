@@ -1,5 +1,6 @@
+import type { mat4, vec3 } from './type';
 export const EPSILON = 0.000001;
-export function identity(out: number[]) {
+export function identity(out: mat4) {
   out[0] = 1;
   out[1] = 0;
   out[2] = 0;
@@ -18,8 +19,8 @@ export function identity(out: number[]) {
   out[15] = 1;
   return out;
 }
-export function perspectiveNO(
-  out: number[],
+export function perspective(
+  out: mat4,
   fovy: number,
   aspect: number,
   near: number,
@@ -50,12 +51,7 @@ export function perspectiveNO(
   }
   return out;
 }
-export function lookAt(
-  out: number[],
-  eye: number[],
-  center: number[],
-  up: number[]
-) {
+export function lookAt(out: mat4, eye: mat4, center: vec3, up: vec3) {
   let x0, x1, x2, y0, y1, y2, z0, z1, z2, len;
   let eyex = eye[0];
   let eyey = eye[1];

@@ -1,9 +1,6 @@
-// @ts-nocheck
 import parseUnit from './parse-unit';
-
 const PIXELS_PER_INCH = 96;
-
-const defaults = {
+const defaultsPX: Record<string, number> = {
   ch: 8,
   ex: 7.15625,
   em: 16,
@@ -15,24 +12,18 @@ const defaults = {
   pc: PIXELS_PER_INCH / 6,
   px: 1,
 };
-
-function toPX(str: string | number | keyof typeof defaults) {
-  if (!str && str !== 0) return null;
-
-  if (str in defaults) return defaults[str];
-
+const toPX = (str: string) => {
+  if (!str) return null;
   // detect number of units
   const [num, unit] = parseUnit(str);
-  if (!isNaN(num)) {
-    if (unit) {
-      const px = toPX(unit);
-      return typeof px === 'number' ? num * px : null;
-    } else {
-      return num;
-    }
+  if (isNaN(num)) {
+    return null;
   }
-
-  return null;
-}
+  if (unit) {
+    const px = defaultsPX[unit];
+    return typeof px === 'number' ? num * px : null;
+  }
+  return num;
+};
 
 export default toPX;
