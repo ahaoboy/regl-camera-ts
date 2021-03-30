@@ -26,10 +26,10 @@ const mouseListen = (
     control: false,
     meta: false,
   };
-  var attached = false;
+  let attached = false;
 
   const updateMods = (ev: MouseEvent | Event) => {
-    var changed = false;
+    let changed = false;
     if ('altKey' in ev) {
       changed = changed || ev.altKey !== mods.alt;
       mods.alt = !!ev.altKey;
@@ -50,8 +50,8 @@ const mouseListen = (
   };
 
   function handleEvent(nextButtons: number, ev: MouseEvent | Event) {
-    var nextX = mouse.x(ev);
-    var nextY = mouse.y(ev);
+    const nextX = mouse.x(ev);
+    const nextY = mouse.y(ev);
     if ('buttons' in ev) {
       nextButtons = ev.buttons | 0;
     }
