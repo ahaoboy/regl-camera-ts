@@ -39,5 +39,23 @@
     "tsdx": "^0.14.1",
     "tslib": "^2.1.0",
     "typescript": "^4.2.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahaoboy/regl-camera-ts"
+  },
+  "bugs": {
+    "url": "https://github.com/ahaoboy/regl-camera-ts/issues"
+  },
+  "keywords": [
+    "regl",
+    "camera",
+    "regl-camera"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  ]
 }
