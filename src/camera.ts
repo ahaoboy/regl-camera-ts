@@ -11,50 +11,45 @@ const getDefaultProp = (props: Partial<IProps>) => {
     view: identity(new Float32Array(16)),
     projection: identity(new Float32Array(16)),
     center: props.center || [0, 0, 0],
-    theta: props.theta || 0,
-    phi: props.phi || 0,
-    distance: Math.log(props.distance || 10.0),
+    theta: props.theta ?? 0,
+    phi: props.phi ?? 0,
+    distance: Math.log(props.distance ?? 10.0),
     eye: new Float32Array(16),
     up: new Float32Array(props.up || [0, 1, 0]),
-    fovy: props.fovy || Math.PI / 4.0,
+    fovy: props.fovy ?? Math.PI / 4.0,
     near: props.near ?? 0.01,
     far: props.far ?? 1000.0,
-    noScroll: typeof props.noScroll !== 'undefined' ? props.noScroll : false,
-    flipY: !!props.flipY,
-    dtheta: 0,
-    dphi: 0,
-    rotationSpeed:
-      typeof props.rotationSpeed !== 'undefined' ? props.rotationSpeed : 1,
-    zoomSpeed: typeof props.zoomSpeed !== 'undefined' ? props.zoomSpeed : 1,
-    renderOnDirty:
-      typeof props.renderOnDirty !== undefined ? !!props.renderOnDirty : false,
-    dirty: false,
-    damping: 0.9,
+    noScroll: props.noScroll ?? false,
+    flipY: props.flipY ?? false,
+    dtheta: props.dtheta ?? 0,
+    dphi: props.dphi ?? 0,
+    rotationSpeed: props.rotationSpeed ?? 1,
+    zoomSpeed: props.zoomSpeed ?? 1,
+    renderOnDirty: props.renderOnDirty ?? false,
+    damping: props.damping ?? 0.9,
     minDistance: Math.log(props.minDistance ?? 0.1),
     maxDistance: Math.log(props.maxDistance ?? 1000),
-    mouse: true,
+    mouse: props.mouse ?? true,
+    dirty: false,
   };
 
   return defaultCameraState;
 };
+const right = new Float32Array([1, 0, 0]);
+const front = new Float32Array([0, 0, 1]);
 
 function createCamera(regl: REGL.Regl, props: Partial<IProps> = {}) {
   const cameraState = getDefaultProp(props);
   const { element, damping, minDistance, maxDistance } = cameraState;
-  const right = new Float32Array([1, 0, 0]);
-  const front = new Float32Array([0, 0, 1]);
-
   let ddistance = 0;
   let prevX = 0;
   let prevY = 0;
   if (isBrowser && props.mouse !== false) {
     const source: HTMLElement = element || (regl._gl.canvas as HTMLElement);
-
     mouseChange(source, function (buttons, x, y) {
       if (buttons & 1) {
         const dx = (x - prevX) / getWidth(element);
         const dy = (y - prevY) / getHeight(element);
-
         cameraState.dtheta += cameraState.rotationSpeed * 4.0 * dx;
         cameraState.dphi += cameraState.rotationSpeed * 4.0 * dy;
         cameraState.dirty = true;
@@ -136,7 +131,6 @@ function createCamera(regl: REGL.Regl, props: Partial<IProps> = {}) {
         return cameraState.projection;
       },
     }),
-    //     context<Context extends REGL.DefaultContext, K extends keyof Context>(name: K): DynamicVariable<Context[K]>;
     uniforms: Object.keys(cameraState).reduce(function (
       uniforms,
       name: string
@@ -149,7 +143,7 @@ function createCamera(regl: REGL.Regl, props: Partial<IProps> = {}) {
 
   const setupCamera: SetupCamera = function (
     props: Partial<IProps> = {},
-    block: any
+    block: any = undefined
   ) {
     if (typeof setupCamera.dirty !== 'undefined') {
       cameraState.dirty = setupCamera.dirty || cameraState.dirty;

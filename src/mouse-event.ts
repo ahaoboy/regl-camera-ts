@@ -16,9 +16,6 @@ const mouseRelativeX = (ev: MouseEvent | Event) => {
     if ('offsetX' in ev) {
       return ev.offsetX;
     }
-    // var target = <HTMLElement>mouseElement(ev);
-    // var bounds = target.getBoundingClientRect();
-    // return ev.clientX - bounds.left;
   }
   return 0;
 };
@@ -28,9 +25,6 @@ function mouseRelativeY(ev: MouseEvent | Event) {
     if ('offsetY' in ev) {
       return ev.offsetY;
     }
-    // var target = <HTMLElement>mouseElement(ev);
-    // var bounds = target.getBoundingClientRect();
-    // return ev.clientY - bounds.top;
   }
   return 0;
 }
