@@ -38,7 +38,7 @@ export interface SetupCamera {
       framebufferWidth: number;
       drawingBufferHeight: number;
       drawingBufferWidth: number;
-      dirty: boolean;
+      dirty: boolean | undefined;
       pixelRatio: number;
     }) => void | Regl.DrawCommand | IProps,
     block?: any
