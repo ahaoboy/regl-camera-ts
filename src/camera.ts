@@ -6,7 +6,7 @@ import type REGL from 'regl';
 import { clamp, getHeight, getWidth } from './utils';
 const isBrowser = typeof window !== 'undefined';
 
-const getDefaultProp = (props: Partial<IProps>) => {
+const getDefaultProps = (props: Partial<IProps>) => {
   const defaultCameraState: IProps = {
     view: identity(new Float32Array(16)),
     projection: identity(new Float32Array(16)),
@@ -14,8 +14,8 @@ const getDefaultProp = (props: Partial<IProps>) => {
     theta: props.theta ?? 0,
     phi: props.phi ?? 0,
     distance: Math.log(props.distance ?? 10.0),
-    eye: new Float32Array(16),
-    up: new Float32Array(props.up || [0, 1, 0]),
+    eye: props.eye || new Float32Array(),
+    up: props.up || new Float32Array([0, 1, 0]),
     fovy: props.fovy ?? Math.PI / 4.0,
     near: props.near ?? 0.01,
     far: props.far ?? 1000.0,
@@ -39,12 +39,12 @@ const right = new Float32Array([1, 0, 0]);
 const front = new Float32Array([0, 0, 1]);
 
 function createCamera(regl: REGL.Regl, props: Partial<IProps> = {}) {
-  const cameraState = getDefaultProp(props);
+  const cameraState = getDefaultProps(props);
   const { element, damping, minDistance, maxDistance } = cameraState;
   let ddistance = 0;
   let prevX = 0;
   let prevY = 0;
-  if (isBrowser && props.mouse !== false) {
+  if (isBrowser && cameraState.mouse !== false) {
     const source: HTMLElement = element || (regl._gl.canvas as HTMLElement);
     mouseChange(source, function (buttons, x, y) {
       if (buttons & 1) {
@@ -112,6 +112,13 @@ function createCamera(regl: REGL.Regl, props: Partial<IProps> = {}) {
 
   cameraState.dirty = true;
 
+  const getUniforms = () => {
+    const uniforms: Record<string, any> = {};
+    for (const k in cameraState) {
+      uniforms[k] = regl.context(k as any) ?? cameraState[k as keyof IProps];
+    }
+    return uniforms;
+  };
   const injectContext = regl({
     context: Object.assign({}, cameraState, {
       dirty: function () {
@@ -131,17 +138,10 @@ function createCamera(regl: REGL.Regl, props: Partial<IProps> = {}) {
         return cameraState.projection;
       },
     }),
-    uniforms: Object.keys(cameraState).reduce(function (
-      uniforms,
-      name: string
-    ) {
-      uniforms[name] = regl.context(name as any);
-      return uniforms;
-    },
-    {} as Record<string, any>),
+    uniforms: getUniforms(),
   });
 
-  const setupCamera: SetupCamera = function (props = {}, block) {
+  const setupCamera: SetupCamera = function (props, block) {
     if (typeof setupCamera.dirty !== 'undefined') {
       cameraState.dirty = setupCamera.dirty || cameraState.dirty;
       setupCamera.dirty = undefined;

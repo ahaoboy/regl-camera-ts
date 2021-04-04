@@ -26,11 +26,14 @@ export type IProps = {
   mouse: boolean;
   element?: HTMLElement;
 };
-
 export interface SetupCamera {
   dirty?: boolean | undefined;
-
-  (props: Partial<IProps> | Regl.DrawCommand, block?: any): void;
+  (
+    props?: (
+      state: IProps & { tick: number; time: number }
+    ) => void | Regl.DrawCommand | IProps,
+    block?: any
+  ): void;
 }
 export type vec3 = [number, number, number] | Float32Array;
 export type mat4 =
