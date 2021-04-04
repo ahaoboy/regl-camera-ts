@@ -29,9 +29,16 @@ export type IProps = {
 export interface SetupCamera {
   dirty?: boolean | undefined;
   (
-    props?: (
-      state: IProps & { tick: number; time: number }
-    ) => void | Regl.DrawCommand | IProps,
+    props?: (state: {
+      tick: number;
+      time: number;
+      viewportHeight: number;
+      viewportWidth: number;
+      framebufferHeight: number;
+      framebufferWidth: number;
+      drawingBufferHeight: number;
+      drawingBufferWidth: number;
+    }) => void | Regl.DrawCommand | IProps,
     block?: any
   ): void;
 }

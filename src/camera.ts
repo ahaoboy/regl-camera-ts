@@ -32,7 +32,6 @@ const getDefaultProps = (props: Partial<IProps>) => {
     mouse: props.mouse ?? true,
     dirty: false,
   };
-
   return defaultCameraState;
 };
 const right = new Float32Array([1, 0, 0]);
@@ -113,9 +112,9 @@ function createCamera(regl: REGL.Regl, props: Partial<IProps> = {}) {
   cameraState.dirty = true;
 
   const getUniforms = () => {
-    const uniforms: Record<string, any> = {};
+    const uniforms: Record<string, REGL.DynamicVariable<any>> = {};
     for (const k in cameraState) {
-      uniforms[k] = regl.context(k as any) ?? cameraState[k as keyof IProps];
+      uniforms[k] = regl.context(k as any);
     }
     return uniforms;
   };
