@@ -141,10 +141,7 @@ function createCamera(regl: REGL.Regl, props: Partial<IProps> = {}) {
     {} as Record<string, any>),
   });
 
-  const setupCamera: SetupCamera = function (
-    props: Partial<IProps> = {},
-    block: any = undefined
-  ) {
+  const setupCamera: SetupCamera = function (props = {}, block) {
     if (typeof setupCamera.dirty !== 'undefined') {
       cameraState.dirty = setupCamera.dirty || cameraState.dirty;
       setupCamera.dirty = undefined;
@@ -158,7 +155,7 @@ function createCamera(regl: REGL.Regl, props: Partial<IProps> = {}) {
     if (!block) {
       block = props;
     }
-    updateCamera(props);
+    updateCamera(typeof props === 'object' ? props : {});
     injectContext(block);
     cameraState.dirty = false;
   };

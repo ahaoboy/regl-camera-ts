@@ -1,3 +1,5 @@
+import type Regl from 'regl';
+
 export type IProps = {
   view: mat4;
   projection: mat4;
@@ -28,7 +30,7 @@ export type IProps = {
 export interface SetupCamera {
   dirty?: boolean | undefined;
 
-  (props: any, block: any): void;
+  (props: Partial<IProps> | Regl.DrawCommand, block?: any): void;
 }
 export type vec3 = [number, number, number] | Float32Array;
 export type mat4 =
