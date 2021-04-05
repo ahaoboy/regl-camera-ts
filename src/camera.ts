@@ -14,7 +14,7 @@ const getDefaultProps = (props: Partial<IProps>) => {
     theta: props.theta ?? 0,
     phi: props.phi ?? 0,
     distance: Math.log(props.distance ?? 10.0),
-    eye: props.eye || identity(new Float32Array(16)),
+    eye: props.eye || [0, 0, 0],
     up: props.up || new Float32Array([0, 1, 0]),
     fovy: props.fovy ?? Math.PI / 4.0,
     near: props.near ?? 0.01,
@@ -160,7 +160,7 @@ function createCamera(regl: REGL.Regl, props: Partial<IProps> = {}) {
   };
 
   Object.assign(setupCamera, cameraState);
-  setupCamera.cameraState = cameraState
+  setupCamera.cameraState = cameraState;
   return setupCamera;
 }
 export default createCamera;

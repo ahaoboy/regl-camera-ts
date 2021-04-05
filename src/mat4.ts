@@ -51,7 +51,7 @@ export function perspective(
   }
   return out;
 }
-export function lookAt(out: mat4, eye: mat4, center: vec3, up: vec3) {
+export function lookAt(out: mat4, eye: vec3, center: vec3, up: vec3) {
   let x0, x1, x2, y0, y1, y2, z0, z1, z2, len;
   let eyex = eye[0];
   let eyey = eye[1];

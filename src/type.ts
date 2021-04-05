@@ -7,7 +7,7 @@ export type IProps = {
   theta: number;
   phi: number;
   distance: number;
-  eye: mat4;
+  eye: vec3;
   up: vec3;
   fovy: number;
   near: number;
