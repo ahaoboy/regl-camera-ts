@@ -160,6 +160,7 @@ function createCamera(regl: REGL.Regl, props: Partial<IProps> = {}) {
   };
 
   Object.assign(setupCamera, cameraState);
+  setupCamera.cameraState = cameraState
   return setupCamera;
 }
 export default createCamera;

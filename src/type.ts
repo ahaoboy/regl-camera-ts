@@ -28,6 +28,7 @@ export type IProps = {
 };
 export interface SetupCamera {
   dirty?: boolean | undefined;
+  cameraState: IProps;
   (
     props?: (state: {
       tick: number;
